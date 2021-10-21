@@ -121,13 +121,11 @@ module.exports = class HardwareStoreOrder extends Order {
           if (sInput && sInput.status === "COMPLETED") {
             //Print shipping details recieved from paypal.
             let shippingInfo = sInput.purchase_units[0].shipping;
-            aReturn.push(`Shipping Info:
-            Deliver to: ${shippingInfo.name.full_name},
+            aReturn.push(`Customer Info:
+            Pickup by: ${shippingInfo.name.full_name},
             Address: ${shippingInfo.address.address_line_1} ${shippingInfo.address.admin_area_1} ${shippingInfo.address.admin_area_2} ${shippingInfo.address.postal_code} ${shippingInfo.address.country_code}`);
 
-            let d = new Date();
-            d.setMinutes(d.getMinutes() + 20);
-            aReturn.push(`Your order will be delivered at ${d.toTimeString()}`);
+            aReturn.push(`Thank you for the payment! We will text you when we're ready to meet you at curbside for pickup.`);
           } else {
             aReturn.push(`Payment failed! Please try ordering again.`);
           }
