@@ -537,7 +537,7 @@ module.exports = class HardwareStoreInfo {
     </head>
     <body class="c13">
       <p class="c22 title" id="h.zeyfig9nyfnv">
-        <span class="c19">Welcome to Hardware at Curbside</span>
+        <span class="c19">Welcome to Rameez’s Hardware @Curbside</span>
       </p>
       <p class="c7"><span class="c0"></span></p>
       <p class="c17 subtitle" id="h.5950j18wwodf">
