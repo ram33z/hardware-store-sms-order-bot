@@ -30,7 +30,7 @@ module.exports = class HardwareStoreOrder extends Order {
       case OrderState.WELCOMING:
         this.stateCur = OrderState.ITEM;
         aReturn.push("Welcome to Rameez's Hardware at Curbside.");
-        aReturn.push("View full menu here: <a href='./HardwareatCurbside.html' target='_blank' style='color:#2ECC40'>Hardware @Curbside</a>.");
+        aReturn.push("View full menu here: <a href='./info' target='_blank' style='color:#2ECC40'>Hardware @Curbside</a>.");
 
         aReturn.push("What item would you like to order?");
         ItemsMenu.map((item, index) =>

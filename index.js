@@ -12,6 +12,8 @@ server.listen(port, function () {
 });
 
 const HardwareStoreOrder = require("./HardwareStoreOrder");
+const HardwareStoreInfo = require("./HardwareStoreInfo");
+
 const e = require('express');
 const { exception } = require('console');
 
@@ -61,6 +63,11 @@ app.post("/payment", (req, res) => {
   const sFrom = req.body.telephone;
   oOrders[sFrom] = new HardwareStoreOrder(sFrom);
   res.end(oOrders[sFrom].renderForm(req.body.title, req.body.price));
+});
+
+// Render Hardware Store Info page
+app.get("/info", (req, res) => {
+  res.end(new HardwareStoreInfo().renderForm());
 });
 
 app.post("/sms", (req, res) => {
