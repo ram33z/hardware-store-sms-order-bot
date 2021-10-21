@@ -1,39 +1,37 @@
 const Order = require("./Order");
 
 const {
-  ItemSize,
   ItemsMenu,
   ExtraPricing,
   HST_RATE,
-} = require("./ShawarmaMenu");
+} = require("./HardwareStoreMenu");
 
 const OrderState = Object.freeze({
   WELCOMING: Symbol("welcoming"),
   ITEM: Symbol("item"),
-  SIZE: Symbol("size"),
-  TOPPINGS: Symbol("toppings"),
-  DRINKS: Symbol("drinks"),
-  PAYMENT: Symbol("payment"),
-  TIP: Symbol("tip"),
+  SCREWS: Symbol("screws"),
+  NAILS: Symbol("nails"),
+  TAPE: Symbol("tape"),
+  PAYMENT: Symbol("payment")
 });
 
-module.exports = class ShwarmaOrder extends Order {
+module.exports = class HardwareStoreOrder extends Order {
   constructor(sNumber, sUrl) {
     super(sNumber, sUrl);
     this.stateCur = OrderState.WELCOMING;
     this.sItem = {};
-    this.sSize = "";
-    this.sToppings = "";
-    this.sDrinks = "";
-    this.sItem = "shawarama";
-    this.sTip = 0;
+    this.sScrews = 0;
+    this.sNails = 0;
+    this.sTape = 0;
   }
   handleInput(sInput) {
     let aReturn = [];
     switch (this.stateCur) {
       case OrderState.WELCOMING:
         this.stateCur = OrderState.ITEM;
-        aReturn.push("Welcome to Rameez's Shawarma.");
+        aReturn.push("Welcome to Rameez's Hardware at Curbside.");
+        aReturn.push("View full menu here: <a href='./HardwareatCurbside.html' target='_blank' style='color:#2ECC40'>Hardware @Curbside</a>.");
+
         aReturn.push("What item would you like to order?");
         ItemsMenu.map((item, index) =>
           aReturn.push(`${index + 1} . ${item.name}`)
@@ -44,73 +42,63 @@ module.exports = class ShwarmaOrder extends Order {
           aReturn.push("Please enter valid item number.");
           break;
         }
-        this.stateCur = OrderState.SIZE;
+        this.stateCur = OrderState.SCREWS;
         this.sItem = ItemsMenu[sInput - 1];
-        aReturn.push("What size would you like? (M/L)");
+        aReturn.push("How many screws you require? Please reply 0 to skip.");
         break;
-      case OrderState.SIZE:
-        let size = sInput.toLowerCase();
-        if (!Object.keys(ItemSize).includes(size)) {
-          aReturn.push(
-            "Please enter valid item size (M for Medium or L for Large)."
-          );
+      case OrderState.SCREWS:
+        if (isNaN(sInput) || sInput < 0) {
+          aReturn.push("Please enter valid number of Screws in digits.");
           break;
         }
-        this.stateCur = OrderState.TOPPINGS;
-        this.sSize = ItemSize[size];
-        aReturn.push(
-          "What toppings would you like? Please reply 'no' to skip."
-        );
+        this.stateCur = OrderState.NAILS;
+        this.sScrews = sInput;
+        aReturn.push("How many nails you require? Please reply 0 to skip.");
         break;
-      case OrderState.TOPPINGS:
-        this.stateCur = OrderState.DRINKS;
-        this.sToppings = sInput;
-        aReturn.push(
-          "Would you like drinks with that? Please reply 'no' to skip."
-        );
-        break;
-      case OrderState.DRINKS:
-        this.stateCur = OrderState.TIP;
-        this.sDrinks = sInput;
-        aReturn.push("Would you like to add a TIP? Please reply 'no' to skip.");
-        break;
-      case OrderState.TIP:
-        if (sInput.toLowerCase() != "no") {
-          if (isNaN(sInput)) {
-            aReturn.push(
-              "Please enter valid tip in digits or reply 'no' to skip."
-            );
-            break;
-          }
+      case OrderState.NAILS:
+        if (isNaN(sInput) || sInput < 0) {
+          aReturn.push("Please enter valid number of Nails in digits.");
+          break;
         }
-        this.sTip = sInput;
-
-        // Get item price as per the specified item size
-        let totalPrice = this.sItem[this.sSize.description];
+        this.stateCur = OrderState.TAPE;
+        this.sNails = sInput;
+        aReturn.push("How many tapes you require? Please reply 0 to skip.");
+        break;
+      case OrderState.TAPE:
+        if (isNaN(sInput) || sInput < 0) {
+          aReturn.push("Please enter valid number of Tapes in digits.");
+          break;
+        }
+        this.sTape = sInput;
+        // Get item price
+        let totalPrice = this.sItem.price;
         aReturn.push("=== Order Summary ===");
         aReturn.push("Thank-you for your order of");
         aReturn.push(
-          `${this.sItem.name} of size ${this.sSize.description} - ($${
-            this.sItem[this.sSize.description]
-          })`
+          `${this.sItem.name} : ($${this.sItem.price})`
         );
-        // Topping Calculation
-        if (this.sToppings.toLowerCase() !== "no") {
+        // Screws Calculation
+        if (this.sScrews > 0) {
           aReturn.push(
-            `Toppings: ${this.sToppings} ($${ExtraPricing.TOPPINGS})`
+            `Screws: ${this.sScrews} x ($${ExtraPricing.SCREWS})`
           );
-          totalPrice += ExtraPricing.TOPPINGS;
+          totalPrice += this.sScrews * ExtraPricing.SCREWS;
         }
-        // Drink Calculation
-        if (this.sDrinks.toLowerCase() !== "no") {
-          aReturn.push(`Drinks: ${this.sDrinks} ($${ExtraPricing.DRINKS})`);
-          totalPrice += ExtraPricing.DRINKS;
+        // Nails Calculation
+        if (this.sNails > 0) {
+          aReturn.push(
+            `Nails: ${this.sNails} x ($${ExtraPricing.NAILS})`
+          );
+          totalPrice += this.sNails * ExtraPricing.NAILS;
         }
-        // Tips calculation
-        if (this.sTip.toString().toLowerCase() !== "no") {
-          aReturn.push(`Tip: $${this.sTip}`);
-          totalPrice += Number(this.sTip);
+        // Tapes Calculation
+        if (this.sTape > 0) {
+          aReturn.push(
+            `Tapes: ${this.sTape} x ($${ExtraPricing.TAPE})`
+          );
+          totalPrice += this.sTape * ExtraPricing.TAPE;
         }
+       
         //Calculate tax
         let tax = totalPrice * HST_RATE;
         aReturn.push(`HST: $${tax.toFixed(2)}`);
@@ -127,6 +115,7 @@ module.exports = class ShwarmaOrder extends Order {
         this.stateCur = OrderState.PAYMENT;
         break;
       case OrderState.PAYMENT:
+        console.log(typeof sInput, sInput);
         if (typeof sInput === "object") {
           this.isDone(true);
           if (sInput && sInput.status === "COMPLETED") {

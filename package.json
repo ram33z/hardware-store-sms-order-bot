@@ -1,16 +1,12 @@
 {
   "name": "es6test",
   "version": "1.0.0",
-  "description": "This is a chance to test es6 with node 9.3",
+  "description": "This is repo for midterm practical exam",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "node index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rhildred/es6test.git"
   },
   "keywords": [
     "node",
@@ -18,12 +14,8 @@
     "problem",
     "solving"
   ],
-  "author": "Rich Hildred",
+  "author": "Rameez Joya",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/rhildred/es6test/issues"
-  },
-  "homepage": "https://github.com/rhildred/es6test#readme",
   "dependencies": {
     "engine.io": "*",
     "express": "*",
