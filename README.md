@@ -6,6 +6,10 @@
 | Created by       | Rameez Joya   |
 | Demo             | [Heroku](https://hardware-curbside.herokuapp.com/) |
 
+## Screenshot:
+
+
+
 # To run:
 
 1. Sign up for paypal developer sandbox and get a client id
@@ -14,9 +18,7 @@
 
 ## Description
 
-Extend the order bot from assignment 1. You need to have at least 2 items on the menu unless your favourite food is pizza in which case you need to have 3 (I did pizza already). The menu items need to have size and one other attribute like toppings. You also need an up-sell item like drinks in the example.
-
-For Assignment 2 you need to add paypal and a payment screen as in the scaffold.
+SMS Order bot for the Hardware Store for the Crubside pickup. Added Paypal and a payment screen as in the scaffold. It shows upto 6 items to choose from and at the end you can be via Paypal payment gateway.
 
 
 There is a brief [presentation here]([flyer]-Hardware-at-Curbside.pdf).
